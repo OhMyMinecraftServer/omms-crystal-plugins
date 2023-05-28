@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f9545dcb-2b21-488f-a467-123b06a896b5" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crystal-backup/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crystal-backup/settings.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crystal-backup/src/main/kotlin/net/zhuruoling/plugins/crystal/backup/CrystalBackup.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crystal-backup/src/main/kotlin/net/zhuruoling/plugins/crystal/backup/Util.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crystal-backup/src/main/kotlin/net/zhuruoling/plugins/crystal/backup/command/BackupCommand.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crystal-backup/src/main/kotlin/net/zhuruoling/plugins/crystal/backup/event/Listener.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crystal-backup/src/main/kotlin/net/zhuruoling/plugins/crystal/backup/event/ServerSaveStateListener.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crystal-backup/src/main/kotlin/net/zhuruoling/plugins/crystal/backup/event/ServerState.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crystal-backup/src/main/kotlin/net/zhuruoling/plugins/crystal/backup/file/ConfigStorage.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crystal-backup/src/main/kotlin/net/zhuruoling/plugins/crystal/backup/file/Procedure.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crystal-backup/src/main/kotlin/net/zhuruoling/plugins/crystal/backup/file/ScheduledBackupProcedure.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crystal-backup/src/main/kotlin/net/zhuruoling/plugins/crystal/backup/file/ScheduledRestoreProcedure.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crystal-backup/src/main/kotlin/net/zhuruoling/plugins/crystal/backup/file/SlotManager.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crystal-backup/src/main/resources/crystal.plugin.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/omms-crystal-0.1.0-full.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/locate/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/locate/src/main/kotlin/net/zhuruoling/plugins/crystal/locate/LocatePlugin.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/locate/src/main/resources/crystal.plugin.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$/crystal-backup">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="omms-crystal-plugins" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="omms-crystal-plugins" type="f1a62948:ProjectNode" />
+                <item name="crystal-backup" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="omms-crystal-plugins" type="f1a62948:ProjectNode" />
+                <item name="crystal-backup" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="omms-crystal-plugins" type="f1a62948:ProjectNode" />
+                <item name="crystal-backup" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin File" />
+        <option value="Kotlin Data Class" />
+        <option value="Kotlin Class" />
+        <option value="Kotlin Object" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2QNc9JqUrboD7DmJPFiKTETOfXM" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/jkl-9/IdeaProjects/omms-crystal-plugins/libs/omms-crystal-0.1.0-full.jar&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;TEXT&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\jkl-9\IdeaProjects\omms-crystal-plugins\crystal-backup\src\main\resources" />
+      <recent name="C:\Users\jkl-9\IdeaProjects\omms-crystal-plugins\locate\src\main\resources" />
+      <recent name="C:\Users\jkl-9\IdeaProjects\omms-crystal-plugins\libs" />
+      <recent name="C:\Users\jkl-9\IdeaProjects\omms-crystal-plugins\locate" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jkl-9\IdeaProjects\omms-crystal-plugins\crystal-backup\src\main" />
+      <recent name="C:\Users\jkl-9\IdeaProjects\omms-crystal-plugins\crystal-backup\src\kotlin" />
+    </key>
+    <key name="CreateKotlinClassDialog.RecentsKey">
+      <recent name="net.zhuruoling.plugins.crystal.backup.file" />
+    </key>
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="net.zhuruoling.plugins.crystal.backup.event" />
+    </key>
+    <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="net.zhuruoling.plugins.crystal.backup.file" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Kotlin.BackupCommandKt">
+    <configuration name="omms-crystal-plugins:crystal-backup [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/crystal-backup" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="jar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>false</ForceTestExec>
+      <method v="2" />
+    </configuration>
+    <configuration name="BackupCommandKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="net.zhuruoling.plugins.crystal.backup.command.BackupCommandKt" />
+      <module name="omms-crystal-plugins.crystal-backup.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Kotlin.BackupCommandKt" />
+        <item itemvalue="Gradle.omms-crystal-plugins:crystal-backup [jar]" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f9545dcb-2b21-488f-a467-123b06a896b5" name="Changes" comment="" />
+      <created>1685197328037</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1685197328037</updated>
+      <workItem from="1685197329159" duration="5825000" />
+      <workItem from="1685261501357" duration="5723000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

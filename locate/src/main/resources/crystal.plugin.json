@@ -1,0 +1,11 @@
+{
+  "id": "locate",
+  "version": "0.0.1",
+  "pluginMain": "net.zhuruoling.omms.plugin.crystal.locate.LocatePlugin",
+  "dependencies": [
+    {
+      "id": "omms-crystal",
+      "requirement": "*"
+    }
+  ]
+}

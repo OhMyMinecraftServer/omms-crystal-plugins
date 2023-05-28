@@ -1,0 +1,15 @@
+{
+  "id": "crystal_backup",
+  "version": "0.0.1",
+  "pluginMain": "net.zhuruoling.omms.plugin.crystal.backup.CrystalBackup",
+  "dependencies": [
+    {
+      "id": "omms-crystal",
+      "requirement": "*"
+    }
+  ],
+  "eventHandlers": [
+    "net.zhuruoling.omms.plugin.crystal.backup.event.Listener",
+    "net.zhuruoling.plugins.crystal.backup.event.ServerSaveStateListener"
+  ]
+}
