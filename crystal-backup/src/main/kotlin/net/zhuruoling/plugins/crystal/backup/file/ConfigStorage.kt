@@ -21,6 +21,7 @@ data class Slot(
     var creationTimeMillis: Long,
     var isEmpty: Boolean,
     val storageDir: String,
+    var comment: String,
     val worldDir: MutableList<String>
 )
 data class PermissionLevelRequirement(

@@ -2,6 +2,7 @@ package net.zhuruoling.plugins.crystal.backup.event
 
 import net.zhuruoling.omms.crystal.event.ServerInfoEventArgs
 import net.zhuruoling.omms.crystal.event.ServerStartedEventArgs
+import net.zhuruoling.omms.crystal.event.ServerStoppedEventArgs
 import net.zhuruoling.omms.crystal.plugin.api.annotations.EventHandler
 import net.zhuruoling.plugins.crystal.backup.file.SlotManager
 
@@ -28,7 +29,7 @@ class ServerSaveStateListener {
     }
 
     @EventHandler(event = "crystal.server.stopped")
-    fun onServerStopped(e: ServerStartedEventArgs) {
+    fun onServerStopped(e: ServerStoppedEventArgs) {
         ServerStatus.serverState = ServerStatus.State.STOPPED
     }
 

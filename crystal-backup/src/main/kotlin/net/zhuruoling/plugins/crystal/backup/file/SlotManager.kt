@@ -16,7 +16,8 @@ object SlotManager {
     var config = createDefaultConfig()
     var hasActiveJob = false
     var scheduledProcedure: Procedure? = null
-    private val slots = mutableMapOf<String, Slot>()
+    val slots = mutableMapOf<String, Slot>()
+    private val ignoredFiles = mutableListOf<File>()
     fun loadFiles() {
         slots.clear()
         try {
@@ -47,7 +48,7 @@ object SlotManager {
                     slotConfig.createNewFile()
                     slotConfig.writer(StandardCharsets.UTF_8).use { it1 ->
                         gson.toJson(
-                            Slot("slot${slotCount++}", System.currentTimeMillis(), true, it, config.worldDir),
+                            Slot("slot${slotCount++}", System.currentTimeMillis(), true, it, "", config.worldDir),
                             it1
                         )
                         it1.flush()
@@ -57,6 +58,28 @@ object SlotManager {
                     val slot = gson.fromJson(it1, Slot::class.java);
                     slots[slot.id] = slot
                 }
+            }
+            ignoredFiles.run {
+                this.clear()
+                config.worldDir.forEach {
+                    config.ignoredFiles.forEach { it1 ->
+                        this += File(
+                            joinFilePaths(
+                                Config.serverWorkingDirectory,
+                                it,
+                                it1
+                            )
+                        )
+                    }
+                }
+                slots.forEach {
+                    config.ignoredFiles.forEach { it1 ->
+                        config.worldDir.forEach { it2 ->
+                            this += File(joinFilePaths("backup", it.value.storageDir, it2, it1))
+                        }
+                    }
+                }
+                this
             }
         } catch (e: Exception) {
             throw PluginException("Cannot load backup files")
@@ -70,21 +93,8 @@ object SlotManager {
         }
     }
 
-    fun getIgnoredFiles(): List<File> =
-        mutableListOf<File>().run {
-            config.worldDir.forEach {
-                config.ignoredFiles.forEach { it1 ->
-                    this += File(
-                        joinFilePaths(
-                            Config.serverWorkingDirectory,
-                            it,
-                            it1
-                        )
-                    )
-                }
-            }
-            this
-        }
+    fun getIgnoredFiles(): List<File> = ignoredFiles
+
 
     fun getSlotSize(id: String): Long {
         val slot = this[id] ?: throw PluginException("Slot $id not found!")

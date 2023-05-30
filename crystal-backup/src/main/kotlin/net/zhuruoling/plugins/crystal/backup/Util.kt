@@ -1,5 +1,7 @@
 package net.zhuruoling.plugins.crystal.backup
 
+import ch.qos.logback.core.util.FileUtil
+import cn.hutool.core.io.file.FileNameUtil
 import com.google.gson.GsonBuilder
 import net.zhuruoling.omms.crystal.command.CommandSource
 import net.zhuruoling.omms.crystal.command.CommandSourceStack
@@ -14,6 +16,7 @@ import net.zhuruoling.plugins.crystal.backup.file.PermissionLevelRequirement
 import net.zhuruoling.plugins.crystal.backup.file.ServerCommand
 import net.zhuruoling.plugins.crystal.backup.file.SlotManager
 import org.apache.commons.io.FileUtils
+import org.apache.commons.io.FilenameUtils
 import java.io.File
 import java.util.*
 
@@ -24,7 +27,7 @@ val gson = GsonBuilder().serializeNulls().setPrettyPrinting().create()
 fun CommandSourceStack.requirePermission(level: Permission): Boolean {
     return if (this.from == CommandSource.PLAYER) {
         return comparePermission(this.permissionLevel!!, level).run {
-            if (this) this@requirePermission.logResponse(
+            if (!this) this@requirePermission.logResponse(
                 Text(
                     "Permission Denied!"
                 ).withColor(Color.red)
@@ -67,9 +70,9 @@ fun createDefaultConfig(): ConfigStorage {
 
 fun CommandSourceStack.logResponse(content: Text) {
     synchronized(this) {
-        if (this.from == CommandSource.PLAYER || this.from == CommandSource.CENTRAL) {
-            LOGGER.info(content.toRawString())
-        }
+//        if (this.from == CommandSource.PLAYER || this.from == CommandSource.CENTRAL) {
+//            LOGGER.info(if(this.from == CommandSource.PLAYER) "[${this.player}] " else if(this.from == CommandSource.CENTRAL) "[CENTRAL] " else "" + content.toRawString())
+//        }
         this.sendFeedback(content)
     }
 }
@@ -91,7 +94,7 @@ fun randomStringGen(len: Int, hasInteger: Boolean, hasUpperLetter: Boolean): Str
 }
 
 fun copyWorld(src: File, dst: File) {
-    FileUtils.copyDirectory(src,dst) {
-        SlotManager.getIgnoredFiles().any { it1 -> it.absolutePath == it1.absolutePath }
+    FileUtils.copyDirectory(src, dst) {
+        FileNameUtil.getName(it.absolutePath) !in SlotManager.config.ignoredFiles
     }
 }

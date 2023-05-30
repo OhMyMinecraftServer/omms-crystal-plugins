@@ -27,6 +27,19 @@ class ScheduledRestoreProcedure(
             return
         }
         SlotManager.hasActiveJob = true
+        for (i in 5 downTo 1){
+            commandSourceStack.logResponse(Text("Server will stop after ${i}s, type ${Config.commandPrefix}backup abort to abort operation.").withColor(Color.red))
+            for (j in 1 until 20){
+                sleep(50)
+                if (this.aborted) {
+                    commandSourceStack.logResponse(Text("Aborted.").withColor(Color.green))
+                    return
+                }
+            }
+        }
+        if (this.aborted){
+            return
+        }
         val startTime = System.currentTimeMillis()
         if (ServerStatus.serverState != ServerStatus.State.STOPPED) {
             ServerStatus.serverState = ServerStatus.State.RUNNING
@@ -76,5 +89,6 @@ class ScheduledRestoreProcedure(
             ServerStartEventArgs(Config.launchCommand, Config.serverWorkingDirectory)
         )
         SlotManager.hasActiveJob = false
+        SlotManager.scheduledProcedure = null
     }
 }
