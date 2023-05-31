@@ -1,6 +1,8 @@
 package net.zhuruoling.plugins.crystal.backup.command
 
 import cn.hutool.core.date.DateTime
+import cn.hutool.core.io.FileUtil
+import cn.hutool.core.io.unit.DataSizeUtil
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import net.kyori.adventure.text.Component
@@ -8,17 +10,18 @@ import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEvent
 import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextDecoration
 import net.zhuruoling.omms.crystal.command.*
 import net.zhuruoling.omms.crystal.config.Config
 import net.zhuruoling.omms.crystal.text.Color
 import net.zhuruoling.omms.crystal.text.HoverAction
 import net.zhuruoling.omms.crystal.text.Text
 import net.zhuruoling.omms.crystal.text.TextGroup
-import net.zhuruoling.plugins.crystal.backup.file.ScheduledBackupProcedure
-import net.zhuruoling.plugins.crystal.backup.file.Slot
-import net.zhuruoling.plugins.crystal.backup.file.SlotManager
+import net.zhuruoling.omms.crystal.util.joinFilePaths
+import net.zhuruoling.plugins.crystal.backup.file.*
 import net.zhuruoling.plugins.crystal.backup.logResponse
 import net.zhuruoling.plugins.crystal.backup.requirePermission
+import java.io.File
 
 fun text(s: String, color: NamedTextColor = NamedTextColor.WHITE): TextComponent {
     return Component.text(s, color)
@@ -44,18 +47,21 @@ object BackupCommand {
             literal("slot").then(
                 literal("delete").then(
                     wordArgument("slot").executes {
+                        deleteSlot(getWord(it, "slot"), it.source)
                         1
                     }
                 )
             ).then(
                 literal("info").then(
                     wordArgument("slot").executes {
+                        listSlotDetail(getWord(it, "slot"), it.source)
                         1
                     }
                 )
             ).then(
                 literal("create").then(
                     wordArgument("slot").executes {
+                        createSlot(getWord(it,"slot"), it.source)
                         1
                     }
                 )
@@ -67,6 +73,14 @@ object BackupCommand {
             ).then(
                 literal("clear").then(
                     wordArgument("slot").executes {
+                        clearSlot(getWord(it, "slot"), false, it.source)
+                        1
+                    }
+                )
+            ).then(
+                literal("force-clear").then(
+                    wordArgument("slot").executes {
+                        clearSlot(getWord(it, "slot"), true, it.source)
                         1
                     }
                 )
@@ -89,9 +103,11 @@ object BackupCommand {
         ).then(
             literal("restore").then(
                 wordArgument("slot").executes {
+                    processRestore(getWord(it, "slot"), it.source)
                     1
                 }
             ).executes {
+                processRestore(null, it.source)
                 1
             }
         ).then(
@@ -113,11 +129,16 @@ object BackupCommand {
     private fun processConfirm(commandSourceStack: CommandSourceStack) {
         if (!commandSourceStack.requirePermission(SlotManager.config.permissionLevelRequirement.confirmOperation)) return
         if (SlotManager.hasActiveJob) {
-            commandSourceStack.logResponse(Text("here is a running backup/restore job.").withColor(Color.yellow))
+            commandSourceStack.logResponse(Text("There is a running backup/restore job.").withColor(Color.yellow))
             return
         }
         if (SlotManager.scheduledProcedure == null) {
             commandSourceStack.logResponse(Text("Nothing to confirm.").withColor(Color.yellow))
+            return
+        }
+        if (SlotManager.scheduledProcedure!!.scheduledTimeMillis < System.currentTimeMillis()) {
+            commandSourceStack.logResponse(Text("Confirmation time out.").withColor(Color.yellow))
+            SlotManager.scheduledProcedure = null
             return
         }
         commandSourceStack.logResponse(Text("Confirm.").withColor(Color.green))
@@ -222,7 +243,73 @@ object BackupCommand {
         commandSourceStack.sendFeedback(Text("One operation was aborted.").withColor(Color.green))
     }
 
+    private fun listSlotDetail(id: String, commandSourceStack: CommandSourceStack) {
+        val slot = SlotManager[id].run {
+            if (this == null) {
+                commandSourceStack.sendFeedback(text("Slot $id not exist!", NamedTextColor.RED))
+                return
+            } else this
+        }
+        if (SlotManager.slots.isEmpty()) {
+            commandSourceStack.sendFeedback(text("No slot configured."))
+        }
+        commandSourceStack.sendFeedback(text("Collecting Slot info."))
+        val dir = File(joinFilePaths("backup", slot.storageDir))
+        val slotSize = FileUtil.size(dir)
+        val formattedSizeStr = DataSizeUtil.format(slotSize)
+        val formattedTimeStr = DateTime.of(slot.creationTimeMillis).toString("yyyy-MM-dd hh:mm:ss")
+        commandSourceStack.sendFeedback(text("[SLOT DETAIL]", NamedTextColor.GREEN).decorate(TextDecoration.BOLD))
+        commandSourceStack.sendFeedback(
+            text("Slot ID: ").append(
+                text(slot.id, NamedTextColor.YELLOW).decorate(
+                    TextDecoration.ITALIC
+                )
+            )
+        )
+        commandSourceStack.sendFeedback(
+            text("Is Empty: ").append(
+                text(
+                    slot.isEmpty.toString(),
+                    NamedTextColor.YELLOW
+                ).decorate(TextDecoration.ITALIC)
+            )
+        )
+        commandSourceStack.sendFeedback(
+            text("Storage dir: ").append(
+                text(
+                    dir.canonicalPath,
+                    NamedTextColor.YELLOW
+                ).decorate(TextDecoration.ITALIC)
+            )
+        )
+        commandSourceStack.sendFeedback(
+            text("Creation Time: ").append(
+                text(
+                    formattedTimeStr,
+                    NamedTextColor.YELLOW
+                ).decorate(TextDecoration.ITALIC)
+            )
+        )
+        commandSourceStack.sendFeedback(
+            text("Comment: ").append(
+                text(
+                    slot.comment.ifEmpty { "Empty" },
+                    NamedTextColor.YELLOW
+                ).decorate(TextDecoration.ITALIC)
+            )
+        )
+        commandSourceStack.sendFeedback(
+            text("Slot Size: ").append(
+                text(
+                    formattedSizeStr,
+                    NamedTextColor.YELLOW
+                ).decorate(TextDecoration.ITALIC)
+            )
+        )
+    }
+
     private fun makeBackup(id: String?, comment: String?, commandSourceStack: CommandSourceStack) {
+        if (!commandSourceStack.requirePermission(SlotManager.config.permissionLevelRequirement.makeBackup)) return
         if (SlotManager.slots.isEmpty()) {
             commandSourceStack.sendFeedback(text("No slot configured."))
         }
@@ -242,4 +329,89 @@ object BackupCommand {
             commandSourceStack.sendFeedback(Text("There is a running backup/restore job.").withColor(Color.red))
         }
     }
+
+    private fun deleteSlot(id: String, commandSourceStack: CommandSourceStack) {
+        if (!commandSourceStack.requirePermission(SlotManager.config.permissionLevelRequirement.deleteSlot)) return
+        if (SlotManager.slots.isEmpty()) {
+            commandSourceStack.sendFeedback(text("No slot configured."))
+        }
+        val slot = SlotManager[id].run {
+            if (this == null) {
+                commandSourceStack.sendFeedback(text("Slot $id not exist!", NamedTextColor.RED))
+                return
+            } else this
+        }
+        if (SlotManager.scheduledProcedure == null) {
+            synchronized(SlotManager) {
+                SlotManager.scheduledProcedure =
+                    ScheduledDeleteSlotProcedure(System.currentTimeMillis() + 5 * 60 * 1000, slot, commandSourceStack)
+                if (SlotManager.config.requireConfirm) {
+                    commandSourceStack.sendFeedback(text("Type \"${Config.commandPrefix}backup confirm\" in 5 minutes to confirm operation."))
+                } else {
+                    SlotManager.scheduledProcedure!!.start()
+                }
+            }
+        } else {
+            commandSourceStack.sendFeedback(Text("There is a running backup/restore job.").withColor(Color.red))
+        }
+    }
+
+    private fun processRestore(id: String?, commandSourceStack: CommandSourceStack) {
+        if (SlotManager.slots.isEmpty()) {
+            commandSourceStack.sendFeedback(text("No slot configured."))
+        }
+        val slot = if (id == null) SlotManager[SlotManager.slots.keys.first()]!! else SlotManager[id].run {
+            if (this == null) {
+                commandSourceStack.sendFeedback(text("Slot $id not exist!", NamedTextColor.RED))
+                return
+            } else this
+        }
+        if (SlotManager.scheduledProcedure == null) {
+            synchronized(SlotManager) {
+                SlotManager.scheduledProcedure =
+                    ScheduledRestoreProcedure(System.currentTimeMillis() + 5 * 60 * 1000, slot, commandSourceStack)
+                if (SlotManager.config.requireConfirm) {
+                    commandSourceStack.sendFeedback(text("Type \"${Config.commandPrefix}backup confirm\" in 5 minutes to confirm operation."))
+                } else {
+                    SlotManager.scheduledProcedure!!.start()
+                }
+            }
+        } else {
+            commandSourceStack.sendFeedback(Text("There is a running backup/restore job.").withColor(Color.red))
+        }
+    }
+
+    private fun clearSlot(id: String, force: Boolean, commandSourceStack: CommandSourceStack) {
+        if (!commandSourceStack.requirePermission(SlotManager.config.permissionLevelRequirement.clearSlot)) return
+        if (SlotManager.slots.isEmpty()) {
+            commandSourceStack.sendFeedback(text("No slot configured."))
+        }
+        val slot = SlotManager[id].run {
+            if (this != null) {
+                this
+            } else {
+                commandSourceStack.sendFeedback(text("Slot $id not exist!", NamedTextColor.RED))
+                return
+            }
+        }
+        if (SlotManager.scheduledProcedure == null) {
+            synchronized(SlotManager) {
+                SlotManager.scheduledProcedure =
+                    ClearSlotProcedure(System.currentTimeMillis() + 5 * 60 * 1000, slot, commandSourceStack, force)
+                if (SlotManager.config.requireConfirm) {
+                    commandSourceStack.sendFeedback(text("Type \"${Config.commandPrefix}backup confirm\" in 5 minutes to confirm operation."))
+                } else {
+                    SlotManager.scheduledProcedure!!.start()
+                }
+            }
+        } else {
+            commandSourceStack.sendFeedback(Text("There is a running backup/restore job.").withColor(Color.red))
+        }
+    }
+
+    private fun createSlot(id: String, commandSourceStack: CommandSourceStack){
+        val proc = CreateSlotProcedure(id, commandSourceStack)
+        proc.start()
+    }
+
 }

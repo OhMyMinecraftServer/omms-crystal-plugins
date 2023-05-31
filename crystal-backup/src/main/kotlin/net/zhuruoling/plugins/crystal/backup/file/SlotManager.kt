@@ -1,13 +1,12 @@
 package net.zhuruoling.plugins.crystal.backup.file
 
 import cn.hutool.core.io.FileUtil
+import net.zhuruoling.omms.crystal.command.CommandSourceStack
 import net.zhuruoling.omms.crystal.config.Config
 import net.zhuruoling.omms.crystal.plugin.PluginException
 import net.zhuruoling.omms.crystal.util.joinFilePaths
-import net.zhuruoling.plugins.crystal.backup.configFile
-import net.zhuruoling.plugins.crystal.backup.createDefaultConfig
-import net.zhuruoling.plugins.crystal.backup.gson
-import net.zhuruoling.plugins.crystal.backup.storageDir
+import net.zhuruoling.plugins.crystal.backup.*
+import net.zhuruoling.plugins.crystal.backup.command.text
 import java.io.File
 import java.nio.charset.StandardCharsets
 
@@ -95,13 +94,6 @@ object SlotManager {
 
     fun getIgnoredFiles(): List<File> = ignoredFiles
 
-
-    fun getSlotSize(id: String): Long {
-        val slot = this[id] ?: throw PluginException("Slot $id not found!")
-        val slotDir = File(joinFilePaths("backup", slot.storageDir))
-        return FileUtil.size(slotDir)
-    }
-
     fun writeSlotConfig(config: Slot) {
         this.slots[config.id] = config
         val file = File(joinFilePaths("backup", config.storageDir, "slot.json"))
@@ -112,6 +104,25 @@ object SlotManager {
         file.writer(StandardCharsets.UTF_8).use {
             gson.toJson(config, it)
         }
+    }
+
+    fun saveConfig() {
+        config.slots = this.slots.values.map { it.storageDir }.toMutableList()
+        File(joinFilePaths("config", "crystal_backup.json")).writer(StandardCharsets.UTF_8).use {
+            gson.toJson(config, it)
+        }
+    }
+
+
+    fun createSlot(id: String, commandSourceStack: CommandSourceStack) {
+        val dirStr = randomStringGen(16)
+        val slot = Slot(id, System.currentTimeMillis(), true, dirStr, "", config.worldDir)
+        val storeDirectory = File(joinFilePaths("backup", dirStr))
+        commandSourceStack.sendFeedback(text("Creating Directory."))
+        storeDirectory.mkdir()
+        commandSourceStack.sendFeedback(text("Writing Files."))
+        writeSlotConfig(slot)
+        saveConfig()
     }
 
 

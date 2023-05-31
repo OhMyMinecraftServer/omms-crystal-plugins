@@ -13,7 +13,7 @@ data class ConfigStorage(
     val worldSavedKeywords: MutableList<String>,
     val autoSaveOnKeywords: MutableList<String>,
     val autoSaveOffKeywords: MutableList<String>,
-    val slots: MutableList<String>,
+    var slots: MutableList<String>,
 )
 
 data class Slot(
@@ -22,13 +22,14 @@ data class Slot(
     var isEmpty: Boolean,
     val storageDir: String,
     var comment: String,
-    val worldDir: MutableList<String>
+    var worldDir: MutableList<String>
 )
 data class PermissionLevelRequirement(
     val makeBackup: Permission,
     val deleteBackup: Permission,
     val showSlot: Permission,
     val deleteSlot: Permission,
+    val clearSlot:Permission,
     val createSlot: Permission,
     val confirmOperation: Permission,
     val revokeOperation: Permission,

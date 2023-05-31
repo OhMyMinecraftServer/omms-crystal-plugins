@@ -23,10 +23,10 @@ class ScheduledBackupProcedure(
 ) :
     Procedure(scheduledTimeMillis, "BackupProcedure") {
     override fun run() {
-//        if (SlotManager.hasActiveJob) {
-//            commandSourceStack.logResponse(Text("There is a running backup/restore job.").withColor(Color.red))
-//            return
-//        }
+        if (SlotManager.hasActiveJob) {
+            commandSourceStack.logResponse(Text("There is a running backup/restore job.").withColor(Color.red))
+            return
+        }
         SlotManager.hasActiveJob = true
 
         val startTime = System.currentTimeMillis()
@@ -68,7 +68,7 @@ class ScheduledBackupProcedure(
             }
             val slotConfig = destinationSlot
             slotConfig.creationTimeMillis = startTime
-            slotConfig.worldDir += SlotManager.config.worldDir
+            slotConfig.worldDir = SlotManager.config.worldDir
             slotConfig.isEmpty = false
             slotConfig.comment = comment ?: ""
             SlotManager.writeSlotConfig(slotConfig)

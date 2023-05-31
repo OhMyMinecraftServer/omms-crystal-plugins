@@ -52,6 +52,7 @@ fun createDefaultConfig(): ConfigStorage {
             Permission.ADMIN,
             Permission.ADMIN,
             Permission.ADMIN,
+            Permission.ADMIN,
             Permission.ADMIN
         ),
         serverCommand = ServerCommand(

@@ -11,30 +11,40 @@ import net.zhuruoling.plugins.crystal.backup.command.text
 import net.zhuruoling.plugins.crystal.backup.logResponse
 import java.io.File
 
-class ScheduledDeleteSlotProcedure(
+class ClearSlotProcedure(
     scheduledTimeMillis: Long,
     private val srcSlot: Slot,
-    private val commandSourceStack: CommandSourceStack
-) : Procedure(scheduledTimeMillis, "DeleteSlotProcedure") {
+    private val commandSourceStack: CommandSourceStack,
+    private val force: Boolean
+) : Procedure(scheduledTimeMillis, "ClearSlotProcedure") {
     override fun run() {
         if (SlotManager.hasActiveJob) {
             commandSourceStack.logResponse(Text("There is a running backup/restore job.").withColor(Color.red))
             return
         }
         SlotManager.hasActiveJob = true
-        commandSourceStack.logResponse(Text("Deleting slot ${srcSlot.id}."))
+        commandSourceStack.logResponse(Text("Clearing slot ${srcSlot.id}."))
         try {
             val startTime = System.currentTimeMillis()
-            val dir = File(joinFilePaths("backup", srcSlot.storageDir))
-            if (dir.exists())
-                dir.deleteRecursively()
-            SlotManager.slots.remove(srcSlot.id)
+            if (srcSlot.isEmpty and !force) {
+                commandSourceStack.sendFeedback(text("Slot ${srcSlot.id} is empty.", NamedTextColor.YELLOW))
+                SlotManager.hasActiveJob = false
+                SlotManager.scheduledProcedure = null
+                return
+            }
+            srcSlot.worldDir.forEach {
+                val dir = File(joinFilePaths("backup", srcSlot.storageDir, it))
+                if (dir.exists())
+                    dir.deleteRecursively()
+            }
+            srcSlot.isEmpty = true
+            SlotManager.writeSlotConfig(srcSlot)
             val endTime = System.currentTimeMillis()
             commandSourceStack.logResponse(Text("Done! (${(endTime - startTime) / 1000}s)"))
         } catch (e: Exception) {
             commandSourceStack.sendFeedback(
                 text(
-                    "Cannot delete slot because an error occurred, ${e.javaClass.name}: ${e.message ?: e.localizedMessage}",
+                    "Cannot clear slot because an error occurred, ${e.javaClass.name}: ${e.message ?: e.localizedMessage}",
                     NamedTextColor.RED
                 ).hoverEvent(HoverEvent.showText(Component.text(e.stackTraceToString())))
             )
