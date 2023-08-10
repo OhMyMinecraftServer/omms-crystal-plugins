@@ -1,0 +1,16 @@
+{
+  "id": "simple_op",
+  "version": "0.0.1",
+  "author": "ZhuRuoLing",
+  "pluginMain": "net.zhuruoling.plugins.crystal.op.SimpleOpPlugin",
+  "dependencies": [
+    {
+      "id": "omms-crystal",
+      "requirement": "*"
+    }
+  ],
+  "lang": {
+    "zh_cn": "zh_cn.lang",
+    "en_us": "en_us.lang"
+  }
+}

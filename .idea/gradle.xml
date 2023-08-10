@@ -10,6 +10,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/crystal-backup" />
             <option value="$PROJECT_DIR$/locate" />
+            <option value="$PROJECT_DIR$/simple_op" />
           </set>
         </option>
       </GradleProjectSettings>

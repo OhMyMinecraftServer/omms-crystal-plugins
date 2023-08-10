@@ -11,5 +11,9 @@
   "eventHandlers": [
     "net.zhuruoling.plugins.crystal.backup.event.Listener",
     "net.zhuruoling.plugins.crystal.backup.event.ServerSaveStateListener"
-  ]
+  ],
+  "lang": {
+    "zh_cn": "zh_cn.lang",
+    "en_us": "en_us.lang"
+  }
 }
