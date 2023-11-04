@@ -1,0 +1,16 @@
+{
+  "id": "advanced_calculator",
+  "version": "0.0.1",
+  "author": "OptiJava",
+  "pluginMain": "io.github.optijava.plugins.crystal.advanced_calculator.ACPlugin",
+  "dependencies": [
+    {
+      "id": "omms-crystal",
+      "requirement": "*"
+    }
+  ],
+  "lang": {
+    "zh_cn": "zh_cn.lang",
+    "en_us": "en_us.lang"
+  }
+}
