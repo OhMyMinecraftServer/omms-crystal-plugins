@@ -1,14 +1,11 @@
 package net.zhuruoling.plugins.crystal.backup.event
 
-import net.zhuruoling.omms.crystal.event.ServerInfoEvent
-import net.zhuruoling.omms.crystal.event.ServerInfoEventArgs
-import net.zhuruoling.omms.crystal.event.ServerStartedEventArgs
-import net.zhuruoling.omms.crystal.event.ServerStoppedEventArgs
+import net.zhuruoling.omms.crystal.event.*
 import net.zhuruoling.omms.crystal.plugin.api.annotations.EventHandler
 import net.zhuruoling.plugins.crystal.backup.file.SlotManager
 
 class ServerSaveStateListener {
-    @EventHandler(event = "crystal.server.info")
+    @EventHandler(event = ServerInfoEvent::class)
     /*@EventHandler(event = ServerInfoEvent::class.java)*/
     fun onInfo(e: ServerInfoEventArgs) {
         if (SlotManager.config.worldSavingKeywords.any{it in e.info.info}){
@@ -25,12 +22,12 @@ class ServerSaveStateListener {
         }
     }
 
-    @EventHandler(event = "crystal.server.started")
+    @EventHandler(event = ServerStartedEvent::class)
     fun onServerStarted(e: ServerStartedEventArgs) {
         ServerStatus.serverState = ServerStatus.State.RUNNING
     }
 
-    @EventHandler(event = "crystal.server.stopped")
+    @EventHandler(event = ServerStoppedEvent::class)
     fun onServerStopped(e: ServerStoppedEventArgs) {
         ServerStatus.serverState = ServerStatus.State.STOPPED
     }

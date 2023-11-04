@@ -11,8 +11,6 @@ import net.zhuruoling.omms.crystal.plugin.PluginInitializer
 import net.zhuruoling.omms.crystal.plugin.api.CommandApi
 import net.zhuruoling.omms.crystal.plugin.api.ServerApi
 import net.zhuruoling.omms.crystal.rcon.RconClient
-import net.zhuruoling.omms.crystal.util.joinFilePaths
-import java.io.File
 import kotlin.math.roundToInt
 
 class LocatePlugin : PluginInitializer {

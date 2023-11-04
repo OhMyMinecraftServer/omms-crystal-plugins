@@ -2,6 +2,7 @@ package net.zhuruoling.plugins.crystal.op;
 
 import net.zhuruoling.omms.crystal.command.CommandSource;
 import net.zhuruoling.omms.crystal.config.Config;
+import net.zhuruoling.omms.crystal.i18n.TranslateContext;
 import net.zhuruoling.omms.crystal.i18n.TranslateManagerKt;
 import net.zhuruoling.omms.crystal.plugin.PluginInitializer;
 import net.zhuruoling.omms.crystal.plugin.api.CommandApi;
@@ -11,8 +12,9 @@ import net.zhuruoling.omms.crystal.text.Color;
 import net.zhuruoling.omms.crystal.text.Text;
 
 import java.nio.file.Path;
+import java.util.function.Function;
 
-import static net.zhuruoling.omms.crystal.command.CommandKt.*;
+import static net.zhuruoling.omms.crystal.command.CommandKt.literal;
 
 public class SimpleOpPlugin implements PluginInitializer {
     @InjectArgument(name = "pluginConfig")
@@ -21,6 +23,23 @@ public class SimpleOpPlugin implements PluginInitializer {
     public SimpleOpPlugin() {
 
     }
+
+    private static class TellFunction implements Function<TranslateContext, Integer>{
+        String who;
+        String template;
+        public TellFunction(String who, String template) {
+            this.who = who;
+            this.template = template;
+        }
+        @Override
+        public Integer apply(TranslateContext translateContext) {
+            ServerApi.tell(who, new Text(translateContext.tr(template)).withColor(Color.aqua));
+            return 0;
+        }
+    }
+    //use java to write this plugin is a big mistake
+    private static final TellFunction TELL_FN_OP = new TellFunction("@a", "set_op");
+    private static final TellFunction TELL_FN_DEOP = new TellFunction("@a", "unset_op");
 
     @Override
     public void onInitialize() {
@@ -38,11 +57,7 @@ public class SimpleOpPlugin implements PluginInitializer {
                     }
                     ServerApi.executeCommand("op %s".formatted(player));
                     if (opNoBroadcast)return 0;
-                    TranslateManagerKt.withTranslateContext("simple_op", translateContext -> {
-                                ServerApi.tell("@a", new Text(translateContext.tr("set_op")).withColor(Color.aqua));
-                                return 0;
-                            }
-                    );
+                    TranslateManagerKt.withTranslateContext("simple_op", TELL_FN_OP);
                     return 1;
                 })
         );
@@ -55,11 +70,7 @@ public class SimpleOpPlugin implements PluginInitializer {
                     }
                     ServerApi.executeCommand("deop %s".formatted(player));
                     if (opNoBroadcast)return 0;
-                    TranslateManagerKt.withTranslateContext("simple_op", translateContext -> {
-                                ServerApi.tell("@a", new Text(translateContext.tr("set_op")).withColor(Color.aqua));
-                                return 0;
-                            }
-                    );
+                    TranslateManagerKt.withTranslateContext("simple_op", TELL_FN_DEOP);
                     return 1;
                 })
         );
