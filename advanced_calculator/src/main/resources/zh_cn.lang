@@ -1,3 +1,4 @@
 res?namespace=advanced_calculator
 res?type=lang
 err=在计算时出现意外错误
+help_msg=§2[Advanced Calculator]\n  §f使用 §5"§f==§9<expression>§5" §f指令计算表达式的结果

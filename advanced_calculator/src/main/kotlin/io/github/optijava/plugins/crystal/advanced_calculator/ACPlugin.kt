@@ -22,6 +22,14 @@ class ACPlugin : PluginInitializer {
 
         CommandApi.registerCommand(
             literal("==")
+                .executes {
+                    withTranslateContext("advanced_calculator") {
+                        it.source.sendFeedback(
+                            Component.text(this.tr("help_msg"))
+                        )
+                    }
+                    0
+                }
                 .then(
                     greedyStringArgument("expr")
                         .executes { calculate(it, getWord(it, "expr")) }

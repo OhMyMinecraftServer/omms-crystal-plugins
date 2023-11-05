@@ -1,3 +1,4 @@
 res?namespace=advanced_calculator
 res?type=lang
 err=Unexpected exception occurred when calculating the expression.
+help_msg=§2[Advanced Calculator]\n  §fUse command §5"§f==§9<expression>§5" §fto calculate the expression.
