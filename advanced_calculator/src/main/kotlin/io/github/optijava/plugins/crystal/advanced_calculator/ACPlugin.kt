@@ -4,14 +4,14 @@ import com.mojang.brigadier.context.CommandContext
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextColor
-import net.zhuruoling.omms.crystal.command.CommandSourceStack
-import net.zhuruoling.omms.crystal.command.getWord
-import net.zhuruoling.omms.crystal.command.greedyStringArgument
-import net.zhuruoling.omms.crystal.command.literal
-import net.zhuruoling.omms.crystal.i18n.withTranslateContext
-import net.zhuruoling.omms.crystal.plugin.PluginInitializer
-import net.zhuruoling.omms.crystal.plugin.api.CommandApi
-import net.zhuruoling.omms.crystal.util.createLogger
+import icu.takeneko.omms.crystal.command.CommandSourceStack
+import icu.takeneko.omms.crystal.command.getWord
+import icu.takeneko.omms.crystal.command.greedyStringArgument
+import icu.takeneko.omms.crystal.command.literal
+import icu.takeneko.omms.crystal.i18n.withTranslateContext
+import icu.takeneko.omms.crystal.plugin.PluginInitializer
+import icu.takeneko.omms.crystal.plugin.api.CommandApi
+import icu.takeneko.omms.crystal.util.createLogger
 import javax.script.ScriptEngineManager
 
 class ACPlugin : PluginInitializer {

@@ -1,32 +1,34 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins{
     java
     application
+    kotlin("jvm")
 }
 group = "com.github.ZhuRuoLing"
 version = "0.0.1"
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven("https://jitpack.io")
-    maven("https://libraries.minecraft.net")
-}
+//repositories {
+//    mavenLocal()
+//    mavenCentral()
+//    maven {
+//        url = uri("https://maven.takeneko.icu/releases")
+//    }
+//    maven("https://libraries.minecraft.net")
+//}
 
 dependencies {
-    implementation("com.github.ZhuRuoLing:omms-crystal:master-SNAPSHOT")
-    implementation("com.google.code.gson:gson:2.10")
-    implementation("org.slf4j:slf4j-api:2.0.3")
-    implementation("ch.qos.logback:logback-core:1.4.4")
-    implementation("ch.qos.logback:logback-classic:1.4.4")
-    implementation("com.mojang:brigadier:1.0.18")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.20")
-    implementation("org.apache.groovy:groovy:4.0.2")
-    implementation("org.jline:jline:3.21.0")
-    implementation("cn.hutool:hutool-all:5.8.11")
-    implementation("commons-io:commons-io:2.11.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    implementation("com.alibaba.fastjson2:fastjson2:2.0.20.graal")
-    implementation("net.kyori:adventure-api:4.13.1")
-    implementation("net.kyori:adventure-text-serializer-gson:4.13.1")
-    implementation("nl.vv32.rcon:rcon:1.2.0")
+    compileOnly("icu.takeneko:omms-crystal:0.5.0")
+    implementation(kotlin("stdlib-jdk8"))
+}
+repositories {
+    mavenCentral()
+}
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    jvmTarget = "17"
+}
+val compileTestKotlin: KotlinCompile by tasks
+compileTestKotlin.kotlinOptions {
+    jvmTarget = "17"
 }

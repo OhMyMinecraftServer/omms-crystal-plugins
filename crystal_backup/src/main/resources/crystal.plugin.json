@@ -1,0 +1,19 @@
+{
+  "id": "crystal_backup",
+  "version": "0.0.1",
+  "pluginMain": "icu.takeneko.plugins.crystal.backup.CrystalBackup",
+  "dependencies": [
+    {
+      "id": "omms-crystal",
+      "requirement": "*"
+    }
+  ],
+  "eventHandlers": [
+    "icu.takeneko.plugins.crystal.backup.event.Listener",
+    "icu.takeneko.plugins.crystal.backup.event.ServerSaveStateListener"
+  ],
+  "lang": {
+    "zh_cn": "zh_cn.lang",
+    "en_us": "en_us.lang"
+  }
+}

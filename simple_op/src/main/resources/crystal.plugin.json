@@ -2,7 +2,7 @@
   "id": "simple_op",
   "version": "0.0.1",
   "author": "ZhuRuoLing",
-  "pluginMain": "net.zhuruoling.plugins.crystal.op.SimpleOpPlugin",
+  "pluginMain": "icu.takeneko.plugins.crystal.op.SimpleOpPlugin",
   "dependencies": [
     {
       "id": "omms-crystal",
