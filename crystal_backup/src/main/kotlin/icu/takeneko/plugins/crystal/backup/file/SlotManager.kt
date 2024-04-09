@@ -64,7 +64,7 @@ object SlotManager {
                     config.ignoredFiles.forEach { it1 ->
                         this += File(
                             joinFilePaths(
-                                Config.serverWorkingDirectory,
+                                Config.config.workingDir,
                                 it,
                                 it1
                             )

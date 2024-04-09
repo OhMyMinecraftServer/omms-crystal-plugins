@@ -1,6 +1,3 @@
-plugins{
-    application
-}
 version = "0.0.1"
 repositories {
     mavenLocal()
@@ -8,10 +5,14 @@ repositories {
 }
 
 
-task("buildAllPlugins"){
+tasks.register("buildAllPlugins", Copy::class.java){
     subprojects {
-        this@task.dependsOn(tasks.getByPath(":${name}:jar"))
+        this@register.dependsOn(tasks.getByPath(":${name}:jar"))
     }
+    subprojects {
+        from("${this.buildDir}/libs")
+    }
+    into(buildDir.resolve("libs"))
 }
 
 subprojects{

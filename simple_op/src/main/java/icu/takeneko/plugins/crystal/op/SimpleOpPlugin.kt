@@ -46,7 +46,7 @@ class SimpleOpPlugin : PluginInitializer {
             .requires { commandSourceStack: CommandSourceStack -> commandSourceStack.from == CommandSource.PLAYER }
             .executes { commandContext: CommandContext<CommandSourceStack> ->
                 val player = commandContext.source.player
-                if (player == null || player.isEmpty()) {
+                if (player.isNullOrEmpty()) {
                     return@executes 0
                 }
                 ServerApi.executeCommand("deop %s".formatted(player))
